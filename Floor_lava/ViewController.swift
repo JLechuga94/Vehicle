@@ -24,7 +24,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func createLava(planeAnchor: ARPlaneAnchor) -> SCNNode{
         let planeAnchorPosition = planeAnchor.center
         let lavaNode = SCNNode(geometry: SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z)))
-        lavaNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "Tile")
+        lavaNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "Lava")
         lavaNode.geometry?.firstMaterial?.isDoubleSided = false
         lavaNode.eulerAngles = SCNVector3(Float(-90.degreesToRadians),0,0)
         lavaNode.position = SCNVector3(planeAnchorPosition.x, planeAnchorPosition.y, planeAnchorPosition.z)
