@@ -24,9 +24,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func createLava(planeAnchor: ARPlaneAnchor) -> SCNNode{
         let planeAnchorPosition = planeAnchor.center
         let lavaNode = SCNNode(geometry: SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z)))
-        lavaNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "Lava")
-        lavaNode.geometry?.firstMaterial?.isDoubleSided = true
-        lavaNode.eulerAngles = SCNVector3(Float(90.degreesToRadians),0,0)
+        lavaNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "Tile")
+        lavaNode.geometry?.firstMaterial?.isDoubleSided = false
+        lavaNode.eulerAngles = SCNVector3(Float(-90.degreesToRadians),0,0)
         lavaNode.position = SCNVector3(planeAnchorPosition.x, planeAnchorPosition.y, planeAnchorPosition.z)
         return lavaNode
     }
@@ -34,18 +34,27 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
         let lavaNode = createLava(planeAnchor: planeAnchor)
+        node.addChildNode(lavaNode)
         print("new flat surface detected, new ARPlaneAnchor added")
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
+        node.enumerateChildNodes {(childNode, _) in
+            childNode.removeFromParentNode()
+        }
+        let lavaNode = createLava(planeAnchor: planeAnchor)
+        node.addChildNode(lavaNode)
         print("*************")
         print("updating floors anchor")
     }
     
-//    func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
-//        <#code#>
-//    }
+    func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
+        guard let _ = anchor as? ARPlaneAnchor else {return}
+        node.enumerateChildNodes {(childNode, _) in
+            childNode.removeFromParentNode()
+        }
+    }
 
 
 }
