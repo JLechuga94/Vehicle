@@ -17,6 +17,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var vehicle = SCNPhysicsVehicle()
     var orientation: CGFloat = 0
     var touched: Bool = false
+    var accelerationValues = [UIAccelerationValue(0), UIAccelerationValue(0)]
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
@@ -135,16 +136,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func accelerometerDidChange(acceleration: CMAcceleration){
-        if acceleration.x > 0 {
-            self.orientation = -CGFloat(acceleration.y)
+        accelerationValues[1] = filtered(previousAcceleration: accelerationValues[1], UpdatedAcceleration: acceleration.y)
+         accelerationValues[0] = filtered(previousAcceleration: accelerationValues[0], UpdatedAcceleration: acceleration.x)
+        if accelerationValues[0] > 0 {
+            self.orientation = -CGFloat(accelerationValues[1])
         }
         else{
-            self.orientation = CGFloat(acceleration.y)
+            self.orientation = CGFloat(accelerationValues[1])
         }
         print(acceleration.x)
+
         print(acceleration.y)
         print("")
     }
+}
+
+func filtered(previousAcceleration: Double, UpdatedAcceleration: Double) -> Double {
+    let kfilteringFactor = 0.5
+    return UpdatedAcceleration * kfilteringFactor + previousAcceleration * (1-kfilteringFactor)
 }
 
 func +(left: SCNVector3, right: SCNVector3) -> SCNVector3 {
