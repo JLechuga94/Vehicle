@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7DEADF5920DCB8FA00357348 /* Car-Scene.scn in Resources */ = {isa = PBXBuildFile; fileRef = 7DEADF5820DCB8FA00357348 /* Car-Scene.scn */; };
 		7DEC79CE20DA44180065EE04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEC79CD20DA44180065EE04 /* AppDelegate.swift */; };
 		7DEC79D020DA44180065EE04 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DEC79CF20DA44180065EE04 /* ViewController.swift */; };
 		7DEC79D320DA44180065EE04 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DEC79D120DA44180065EE04 /* Main.storyboard */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7DEADF5820DCB8FA00357348 /* Car-Scene.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "Car-Scene.scn"; sourceTree = "<group>"; };
 		7DEC79CA20DA44180065EE04 /* Vehicle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vehicle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DEC79CD20DA44180065EE04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7DEC79CF20DA44180065EE04 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 		7DEC79CC20DA44180065EE04 /* Vehicle */ = {
 			isa = PBXGroup;
 			children = (
+				7DEADF5820DCB8FA00357348 /* Car-Scene.scn */,
 				7DEC79CD20DA44180065EE04 /* AppDelegate.swift */,
 				7DEC79CF20DA44180065EE04 /* ViewController.swift */,
 				7DEC79D120DA44180065EE04 /* Main.storyboard */,
@@ -206,6 +209,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DEADF5920DCB8FA00357348 /* Car-Scene.scn in Resources */,
 				7DEC79DB20DA44190065EE04 /* LaunchScreen.storyboard in Resources */,
 				7DEC79D820DA44190065EE04 /* Assets.xcassets in Resources */,
 				7DEC79D320DA44180065EE04 /* Main.storyboard in Resources */,
