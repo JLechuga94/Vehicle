@@ -8,19 +8,31 @@
 
 import UIKit
 import ARKit
+import CoreMotion
 class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet weak var sceneView: ARSCNView!
     let configuration = ARWorldTrackingConfiguration()
+    let motionManager = CMMotionManager()
+    var vehicle = SCNPhysicsVehicle()
+    var orientation: CGFloat = 0
+    var touched: Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
         self.configuration.planeDetection = .horizontal
         self.sceneView.session.run(configuration)
         self.sceneView.delegate = self
+        self.setUpAccelerometer()
+        self.sceneView.showsStatistics = true
         // Do any additional setup after loading the view, typically from a nib.
     }
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.touched = true
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.touched = false
+    }
     func createConcrete(planeAnchor: ARPlaneAnchor) -> SCNNode{
         let planeAnchorPosition = planeAnchor.center
         let concreteNode = SCNNode(geometry: SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z)))
@@ -67,13 +79,71 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let currentPositionOfCamera = orientation + location
         
         let scene = SCNScene(named: "Car-Scene.scn")
-        let frame = (scene?.rootNode.childNode(withName: "frame", recursively: false))!
-//        let box = SCNNode(geometry: SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0))
-//        box.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-        frame.position = currentPositionOfCamera
-        let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: frame, options: [SCNPhysicsShape.Option.keepAsCompound: true]))
-        frame.physicsBody = body
-        self.sceneView.scene.rootNode.addChildNode(frame)
+        let chassis = (scene?.rootNode.childNode(withName: "chassis", recursively: false))!
+        let rearRightWheel = chassis.childNode(withName: "rearRightParent", recursively: false)!
+        let rearLeftWheel = chassis.childNode(withName: "rearLeftParent", recursively: false)!
+        let frontRightWheel = chassis.childNode(withName: "frontRightParent", recursively: false)!
+        let frontLeftWheel = chassis.childNode(withName: "frontLeftParent", recursively: false)!
+        
+        let v_rearRightWheel = SCNPhysicsVehicleWheel(node: rearRightWheel)
+        let v_rearLeftWheel = SCNPhysicsVehicleWheel(node: rearLeftWheel)
+        let v_frontRightWheel = SCNPhysicsVehicleWheel(node: frontRightWheel)
+        let v_frontLeftWheel = SCNPhysicsVehicleWheel(node: frontLeftWheel)
+        
+        chassis.position = currentPositionOfCamera
+        let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: chassis, options: [SCNPhysicsShape.Option.keepAsCompound: true]))
+        chassis.physicsBody = body
+        body.mass = 5
+        self.vehicle = SCNPhysicsVehicle(chassisBody: chassis.physicsBody!, wheels: [v_rearRightWheel, v_rearLeftWheel, v_frontRightWheel, v_frontLeftWheel])
+        self.sceneView.scene.physicsWorld.addBehavior(self.vehicle)
+        self.sceneView.scene.rootNode.addChildNode(chassis)
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval) {
+        print("Simulation physics")
+        var engineForce: CGFloat = 0
+        self.vehicle.setSteeringAngle(-orientation, forWheelAt: 2)
+        self.vehicle.setSteeringAngle(-orientation, forWheelAt: 3)
+        
+        if self.touched == true{
+            engineForce = 50
+        }
+        else{
+            engineForce = 0
+        }
+        self.vehicle.applyEngineForce(engineForce, forWheelAt: 0)
+        self.vehicle.applyEngineForce(engineForce, forWheelAt: 1)
+
+
+    }
+    
+    func setUpAccelerometer(){
+        if motionManager.isAccelerometerAvailable{
+            motionManager.accelerometerUpdateInterval = 1/60
+            motionManager.startAccelerometerUpdates(to: .main, withHandler: {(accelerometerData, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                self.accelerometerDidChange(acceleration: accelerometerData!.acceleration)
+                print("Accelerometer is detecting acceleration")
+            })
+        }
+        else{
+            print("Accelerometer not available")
+        }
+    }
+    
+    func accelerometerDidChange(acceleration: CMAcceleration){
+        if acceleration.x > 0 {
+            self.orientation = -CGFloat(acceleration.y)
+        }
+        else{
+            self.orientation = CGFloat(acceleration.y)
+        }
+        print(acceleration.x)
+        print(acceleration.y)
+        print("")
     }
 }
 
