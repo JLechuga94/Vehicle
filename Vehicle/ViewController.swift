@@ -110,20 +110,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         if self.touched == 1 {
             engineForce = 50
-        }
-        else if self.touched == 2 {
+        } else if self.touched == 2 {
             engineForce = -50
+        } else if self.touched == 3 {
+            brakingForce = 100
         }
-//        else if self.touched == 3 {
-//            brakingForce = 100
-//        }
         else {
             engineForce = 0
         }
         self.vehicle.applyEngineForce(engineForce, forWheelAt: 0)
         self.vehicle.applyEngineForce(engineForce, forWheelAt: 1)
-//        self.vehicle.applyEngineForce(brakingForce, forWheelAt: 0)
-//        self.vehicle.applyEngineForce(brakingForce, forWheelAt: 1)
+        self.vehicle.applyBrakingForce(brakingForce, forWheelAt: 0)
+        self.vehicle.applyBrakingForce(brakingForce, forWheelAt: 1)
 
 
     }
