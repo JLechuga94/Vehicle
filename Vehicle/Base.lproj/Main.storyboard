@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Floor_lava" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Vehicle" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -21,6 +21,17 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g8u-Qi-onF">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </arscnView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i5h-10-QNj">
+                                <rect key="frame" x="20" y="617" width="50" height="30"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="N98-2s-F0f"/>
+                                </constraints>
+                                <state key="normal" title="ADD"/>
+                                <connections>
+                                    <action selector="addCar:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bT3-id-gAb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -28,6 +39,8 @@
                             <constraint firstItem="g8u-Qi-onF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="DUY-Sm-Zqg"/>
                             <constraint firstItem="g8u-Qi-onF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gc9-L8-pYo"/>
                             <constraint firstItem="g8u-Qi-onF" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="uTq-u5-Gez"/>
+                            <constraint firstItem="i5h-10-QNj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="xAf-aY-qsS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="i5h-10-QNj" secondAttribute="bottom" constant="20" id="yHG-uQ-avU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
